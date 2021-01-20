@@ -19,7 +19,7 @@ class m210120_102829_create_doctors_table extends Migration
 
         $this->createTable('{{%doctors}}', [
             'id' => $this->bigPrimaryKey()->unsigned(),
-            'user_id' => $this->bigInteger()->unsigned()->notNull(),
+            'user_id' => $this->bigInteger()->unsigned()->unique()->notNull(),
             'speciality_id' => $this->bigInteger()->unsigned(),
             'first_name' => $this->string(100),
             'middle_name' => $this->string(100),

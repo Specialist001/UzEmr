@@ -53,4 +53,38 @@ class Reception extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
+
+    public function getClinic()
+    {
+        return $this->hasOne(Clinic::class, ['id' => 'clinic_id']);
+    }
+
+    public function getPatient()
+    {
+        return $this->hasOne(Patient::class, ['id' => 'patient_id']);
+    }
+
+    public function getDoctor()
+    {
+        return $this->hasOne(Doctor::class, ['id' => 'doctor_id']);
+    }
+
+    public function getEmployee()
+    {
+        return $this->hasOne(Employee::class, ['id' => 'employee_id']);
+    }
+
+    public function getLaboratory()
+    {
+        return $this->hasOne(Laboratory::className(), ['id' => 'laboratory_id']);
+    }
+
+    /**
+     * Analyzes of receptions
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAnalyzes()
+    {
+        return $this->hasMany(Analysis::class, ['reception_id' => 'id']);
+    }
 }

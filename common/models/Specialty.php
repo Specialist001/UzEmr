@@ -40,4 +40,9 @@ class Specialty extends \yii\db\ActiveRecord
             'name' => 'Name',
         ];
     }
+
+    public function getDoctors()
+    {
+        return $this->hasMany(Doctor::class, ['speciality_id' => 'id']);
+    }
 }

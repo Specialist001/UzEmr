@@ -36,6 +36,7 @@ class Doctor extends \yii\db\ActiveRecord
             [['user_id'], 'required'],
             [['user_id', 'speciality_id', 'status', 'created_at', 'updated_at'], 'integer'],
             [['first_name', 'middle_name', 'last_name'], 'string', 'max' => 100],
+            [['user_id'], 'unique'],
         ];
     }
 
@@ -55,5 +56,29 @@ class Doctor extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public function getSpeciality()
+    {
+        return $this->hasOne(Specialty::class, ['id' => 'speciality_id']);
+    }
+
+    public function getReceptions()
+    {
+        return $this->hasMany(Reception::class, ['doctor_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function getClinics()
+    {
+        return $this->hasMany(Clinic::class, ['id' => 'clinic_id'])->viaTable('clinic_doctor', ['doctor_id' => 'id']);
     }
 }

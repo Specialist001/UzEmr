@@ -19,7 +19,7 @@ class m210120_103141_create_patients_table extends Migration
 
         $this->createTable('{{%patients}}', [
             'id' => $this->bigPrimaryKey()->unsigned(),
-            'user_id' => $this->bigInteger()->unsigned()->notNull(),
+            'user_id' => $this->bigInteger()->unsigned()->unique()->notNull(),
             'first_name' => $this->string(100),
             'middle_name' => $this->string(100),
             'last_name' => $this->string(100),

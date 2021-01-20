@@ -35,6 +35,7 @@ class Patient extends \yii\db\ActiveRecord
             [['user_id'], 'required'],
             [['user_id', 'status', 'created_at', 'updated_at'], 'integer'],
             [['first_name', 'middle_name', 'last_name'], 'string', 'max' => 100],
+            [['user_id'], 'unique'],
         ];
     }
 
@@ -53,5 +54,25 @@ class Patient extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    /**
+     * Gets query for [[User]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    public function getReceptions()
+    {
+        return $this->hasMany(Reception::class, ['patient_id' => 'id']);
+    }
+
+    public function getAnalyzes()
+    {
+        return $this->hasMany(Analysis::class, ['patient_id' => 'id']);
     }
 }

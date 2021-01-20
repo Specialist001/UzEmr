@@ -56,4 +56,54 @@ class Analysis extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
+
+    /**
+     * Gets query for [[Reception]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReception()
+    {
+        return $this->hasOne(Reception::class, ['id' => 'reception_id']);
+    }
+
+    /**
+     * Gets query for [[Laboratory]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLaboratory()
+    {
+        return $this->hasOne(Laboratory::class, ['id' => 'laboratory_id']);
+    }
+
+    /**
+     * Gets query for [[Employee]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEmployee()
+    {
+        return $this->hasOne(Employee::class, ['id' => 'employee_id']);
+    }
+
+    /**
+     * Gets query for [[LabType]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLabType()
+    {
+        return $this->hasOne(LabType::class, ['id' => 'lab_type_id']);
+    }
+
+    /**
+     * Gets query for [[LabType]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPatient()
+    {
+        return $this->hasOne(Patient::class, ['id' => 'patient_id']);
+    }
 }

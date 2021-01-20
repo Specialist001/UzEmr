@@ -44,4 +44,31 @@ class Clinic extends \yii\db\ActiveRecord
             'name' => 'Name',
         ];
     }
+
+    /**
+     * Gets query for [[User]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function getDoctors()
+    {
+        return $this->hasMany(Doctor::class, ['id' => 'doctor_id'])->viaTable('clinic_doctor', ['clinic_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReceptions()
+    {
+        return $this->hasMany(Reception::class, ['clinic_id' => 'id']);
+    }
 }

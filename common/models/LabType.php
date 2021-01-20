@@ -43,4 +43,18 @@ class LabType extends \yii\db\ActiveRecord
             'type' => 'Type',
         ];
     }
+
+    public function getAnalyzes()
+    {
+        return $this->hasMany(Analysis::class, ['lab_type_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function getLaboratories()
+    {
+        return $this->hasMany(Laboratory::class, ['id' => 'laboratory_id'])->viaTable('laboratory_laboratory_types', ['lab_type_id' => 'id']);
+    }
 }

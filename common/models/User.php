@@ -273,22 +273,43 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Gets query for [[UserCards]].
+     * Gets query for [[UserToken]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUserCards()
+    public function getUserTokens()
     {
-        return $this->hasMany(UserCard::class, ['user_id' => 'id']);
+        return $this->hasMany(UserToken::class, ['user_id' => 'id']);
     }
 
     /**
-     * Gets query for [[UserDevices]].
-     *
      * @return \yii\db\ActiveQuery
      */
-    public function getUserDevices()
+    public function getDoctor()
     {
-        return $this->hasMany(UserDevice::class, ['user_id' => 'id']);
+        return $this->hasOne(Doctor::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPatient()
+    {
+        return $this->hasOne(Patient::class, ['user_id' => 'id']);
+    }
+
+    public function getEmployee()
+    {
+        return $this->hasOne(Employee::class, ['user_id' => 'id']);
+    }
+
+    public function getLaboratories()
+    {
+        return $this->hasMany(Laboratory::class, ['user_id' => 'id']);
+    }
+
+    public function getClinics()
+    {
+        return $this->hasMany(Clinic::class, ['user_id' => 'id']);
     }
 }
