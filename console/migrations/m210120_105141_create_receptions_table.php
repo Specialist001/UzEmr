@@ -24,6 +24,9 @@ class m210120_105141_create_receptions_table extends Migration
             'doctor_id' => $this->bigInteger()->unsigned()->notNull(),
             'employee_id' => $this->bigInteger()->unsigned()->notNull(),
             'laboratory_id' => $this->bigInteger()->unsigned()->null(),
+
+            'created_at' => $this->integer(),
+            'updated_at' => $this->integer(),
         ], $tableOptions);
     }
 

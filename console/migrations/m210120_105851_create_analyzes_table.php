@@ -24,7 +24,10 @@ class m210120_105851_create_analyzes_table extends Migration
             'employee_id' => $this->bigInteger()->unsigned()->notNull(),
             'lab_type_id' => $this->bigInteger()->unsigned()->notNull(),
             'patient_id' => $this->bigInteger()->unsigned()->notNull(),
-            'description' => $this->text()
+            'description' => $this->text(),
+
+            'created_at' => $this->integer(),
+            'updated_at' => $this->integer(),
         ], $tableOptions);
     }
 
