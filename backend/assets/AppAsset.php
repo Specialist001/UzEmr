@@ -9,15 +9,26 @@ use yii\web\AssetBundle;
  */
 class AppAsset extends AssetBundle
 {
-    public $basePath = '@webroot';
-    public $baseUrl = '@web';
+    public $basePath = '@webroot/medical';
+    public $baseUrl = '@web/medical';
     public $css = [
-        'css/site.css',
+        'css/bootstrap.min.css',
+        'css/typography.css',
+        'css/style.css',
+        'css/responsive.css',
     ];
     public $js = [
+        'js/jquery.min.js',
+        'js/popper.min.js',
+        'js/bootstrap.min.js',
+        'js/jquery.appear.js',
+        'js/wow.min.js',
+        'js/core.js',
+        'js/animated.js',
+        'js/custom.js',
     ];
     public $depends = [
-        'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
+//        'yii\web\YiiAsset',
+//        'yii\bootstrap\BootstrapAsset',
     ];
 }
