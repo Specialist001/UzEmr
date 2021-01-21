@@ -1,6 +1,6 @@
 <?php
 
-namespace api\transformers;
+namespace api\modules\v1\transformers;
 
 use Yii;
 

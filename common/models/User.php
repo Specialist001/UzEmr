@@ -16,15 +16,16 @@ use yii\web\IdentityInterface;
  * @property string|null $password_reset_token
  * @property string $verification_token
  * @property string|null $email
- * @property string|null $role
  * @property string $auth_key
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
  *
- * @property UserDevice $userDevices
- * @property UserCard $userCards
+ * @property Patient $patient
+ * @property Employee $employee
+ * @property Doctor $doctor
+ * @property UserToken $userTokens
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -32,27 +33,7 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
-    const ROLE_USER = 'user';
-    const ROLE_API_USER = 'api_user';
-
     public $password;
-
-    public static function roles()
-    {
-        return [
-            static::ROLE_USER,
-            static::ROLE_API_USER,
-        ];
-    }
-
-    public static function roleList()
-    {
-        $list = [];
-        $list[static::ROLE_USER] = "User";
-        $list[static::ROLE_API_USER] = "Api User";
-
-        return $list;
-    }
 
     public static function statusList()
     {
@@ -91,10 +72,9 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
-            [['username', 'role', 'status'], 'required'],
-            ['role', 'default', 'value' => self::ROLE_USER],
+            [['username', 'status'], 'required'],
             [['status', 'created_at', 'updated_at'], 'integer'],
-            [['username', 'password_hash', 'password_reset_token', 'email', 'role', 'verification_token'], 'string', 'max' => 255],
+            [['username', 'password_hash', 'password_reset_token', 'email', 'verification_token'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['username'], 'unique'],
             [['password'], 'required', 'on' => 'create'],
@@ -112,7 +92,6 @@ class User extends ActiveRecord implements IdentityInterface
             'password_hash' => 'Password Hash',
             'password_reset_token' => 'Password Reset Token',
             'email' => 'Email',
-            'role' => 'Role',
             'status' => 'Status',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',

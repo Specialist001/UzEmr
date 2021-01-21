@@ -6,6 +6,7 @@ namespace api\modules\v1\controllers;
 
 use common\models\ApiUser;
 use Yii;
+use yii\filters\auth\HttpBearerAuth;
 use yii\filters\VerbFilter;
 
 abstract class BaseController extends \yii\rest\Controller
@@ -21,12 +22,16 @@ abstract class BaseController extends \yii\rest\Controller
 
     public function behaviors()
     {
-        return [
-            'verbs' => [
-                'class'   => VerbFilter::class,
-                'actions' => ['*' => ['POST']],
-            ],
+        $behaviors = parent::behaviors();
+        $behaviors['authenticator'] = [
+            'class' => HttpBearerAuth::className(),
+            'optional' => ['']
         ];
+        $behaviors['verbs'] = [
+            'class'   => VerbFilter::class,
+//            'actions' => ['*' => ['POST']],
+        ];
+        return $behaviors;
     }
 
     public function beforeAction($action)

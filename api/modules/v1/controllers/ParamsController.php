@@ -5,10 +5,11 @@ namespace api\modules\v1\controllers;
 use api\actions\status\CheckVersionAction;
 use api\models\PasswordResetRequestForm;
 use api\models\SignupForm;
+use api\modules\v1\services\AuthService;
 use api\responses\ErrorResponse;
 use api\responses\Response;
 use api\forms\AuthForm;
-use api\services\AuthService;
+
 use common\models\ApiUser;
 use common\models\Company;
 use common\models\User;
@@ -25,7 +26,7 @@ use yii\web\NotFoundHttpException;
 
 abstract class ParamsController extends BaseController
 {
-    public $_apiUser = null;
+    public $_user = null;
     public $_company = null;
     public $device = null;
 
@@ -36,6 +37,7 @@ abstract class ParamsController extends BaseController
     public function __construct($id, $module, array $config = [])
     {
         $this->authService = new AuthService();
+        $this->_user = Yii::$app->user;
         parent::__construct($id, $module, $config);
     }
 
@@ -43,7 +45,7 @@ abstract class ParamsController extends BaseController
     {
         if (parent::beforeAction($action))
         {
-            $this->auth();
+//            $this->auth();
             return true;
         }
         return false;

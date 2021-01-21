@@ -1,10 +1,11 @@
 <?php
 
 
-namespace api\forms;
+namespace api\modules\v1\forms;
 
 
-use api\responses\Response;
+use api\modules\v1\responses\ErrorResponse;
+use api\modules\v1\responses\Response;
 use common\models\User;
 use common\models\UserDevice;
 use yii\base\Exception;
@@ -13,7 +14,7 @@ use yii\web\ForbiddenHttpException;
 
 class UserForm extends Model
 {
-    public $phone;
+    public $username;
     public $device_id;
     public $device_type;
     public $sdk_version;
@@ -24,35 +25,40 @@ class UserForm extends Model
     public function rules()
     {
         return [
-            [['phone', 'device_id', 'device_type', 'sdk_version'], 'required'],
-            [['phone', 'device_id', 'device_id'], 'string'],
-            ['sdk_version', 'integer'],
-            ['phone', 'match', 'pattern' => '/^(998[0-9]{9})$/', 'message' => "{attribute}: Wrong format phone number"],
-            ['device_type', 'in', 'range' => [self::TYPE_ANDROID, self::TYPE_IOS]],
+            [['username'], 'required'],
+            [['username'], 'string'],
+//            ['phone', 'match', 'pattern' => '/^(998[0-9]{9})$/', 'message' => "{attribute}: Wrong format phone number"],
+//            ['device_type', 'in', 'range' => [self::TYPE_ANDROID, self::TYPE_IOS]],
         ];
     }
 
     public function user()
     {
-        $user = User::find()->where(['username' => $this->phone, 'status' => User::STATUS_ACTIVE])->one();
+        $user = User::find()->where(['username' => $this->username, 'status' => User::STATUS_ACTIVE])->one();
         if(!$user) {
             $user = new User();
-            $user->username = $this->phone;
-            $user->role = User::ROLE_USER;
+            $user->username = $this->username;
             $user->status = User::STATUS_ACTIVE;
             $user->generateAuthKey();
             $user->setPassword($this->shuffle());
             if ($user->validate()) {
                 $user->save();
-                $this->createUserDevice($user);
                 return $user;
+            } else {
+                return [
+                    'error' => new ErrorResponse(Response::CODE_REJECTED, __getFirstArrayItem($user->firstErrors)),
+                    'data' => null,
+                ];
             }
         }
-        $userDevice = UserDevice::findOne(['device_id' => $this->device_id, 'user_id' => $user->id]);
-        if (!$userDevice) {
-            $this->createUserDevice($user);
-        }
-        return $user;
+        return [
+            'error' => new ErrorResponse(Response::CODE_REJECTED, 'User already created'),
+            'data' => null,
+        ];
+//        $userDevice = UserDevice::findOne(['device_id' => $this->device_id, 'user_id' => $user->id]);
+//        if (!$userDevice) {
+//            $this->createUserDevice($user);
+//        }
 //        throw new Exception(__getFirstArrayItem($user->firstErrors));
     }
 

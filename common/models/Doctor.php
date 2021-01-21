@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "doctors".
@@ -16,6 +17,8 @@ use Yii;
  * @property int $status
  * @property int|null $created_at
  * @property int|null $updated_at
+ *
+ * @property Specialty $speciality
  */
 class Doctor extends \yii\db\ActiveRecord
 {
@@ -55,6 +58,16 @@ class Doctor extends \yii\db\ActiveRecord
             'status' => 'Status',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
         ];
     }
 

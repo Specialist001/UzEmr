@@ -1,6 +1,6 @@
 <?php
 
-namespace api\services;
+namespace api\modules\v1\services;
 
 use api\forms\AuthForm;
 use common\models\ApiUser;

@@ -5,24 +5,35 @@ namespace api\modules\v1\controllers;
 
 
 use api\forms\UserCardsForm;
-use api\forms\UserForm;
-use api\responses\ErrorResponse;
-use api\responses\Response;
+use api\modules\v1\forms\UserForm;
+use api\modules\v1\responses\ErrorResponse;
+use api\modules\v1\responses\Response;
+use api\modules\v1\transformers\UserInfo;
 use api\transformers\UserCardInfo;
-use api\transformers\UserInfo;
 use common\models\User;
 
-class UserController extends ParamsController
+class UsersController extends ParamsController
 {
     public function actionIndex()
     {
-        $form = new UserForm();
-        $form->load($this->getRequestBodyParams(),'user');
+        $user = $this->_user->identity;
+
+        $this->__response = [
+            'error' => null,
+            'data' => UserInfo::transform($user),
+        ];
+        return $this->__response;
+    }
+
+    public function actionCreate()
+    {
+        $form = new \api\modules\v1\forms\UserForm();
+        $form->load($this->getRequestBodyParams(),'');
 
         if(!$form->validate()) {
             if ($form->getFirstErrors()) {
                 $this->__response = [
-                    'error' => new ErrorResponse(Response::CODE_REJECTED, __getFirstArrayItem($form->firstErrors)),
+                    'error' => new \api\modules\v1\responses\ErrorResponse(\api\modules\v1\responses\Response::CODE_REJECTED, __getFirstArrayItem($form->firstErrors)),
                     'data' => null,
                 ];
                 return $this->__response;
@@ -30,9 +41,13 @@ class UserController extends ParamsController
         }
         $user = $form->user();
 
+        if (!empty($user['error'])) {
+            return $user;
+        }
+
         $this->__response = [
             'error' => null,
-            'data' => UserInfo::transform($user),
+            'data' => \api\modules\v1\transformers\UserInfo::transform($user),
         ];
         return $this->__response;
     }
