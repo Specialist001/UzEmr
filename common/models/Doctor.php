@@ -94,4 +94,20 @@ class Doctor extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Clinic::class, ['id' => 'clinic_id'])->viaTable('clinic_doctor', ['doctor_id' => 'id']);
     }
+
+    public function getSpecialityName()
+    {
+        if ($this->speciality) {
+            return $this->speciality->name;
+        }
+        return null;
+    }
+
+    public function hasSpeciality()
+    {
+        if ($this->speciality) {
+            return true;
+        }
+        return false;
+    }
 }

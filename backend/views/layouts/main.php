@@ -82,9 +82,9 @@ AppAsset::register($this);
     <div id="content-page" class="content-page">
         <?php echo $this->render('top.php') ?>
         <div class="container-fluid">
-            <?= Breadcrumbs::widget([
-                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-            ]) ?>
+<!--            --><?//= Breadcrumbs::widget([
+//                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+//            ]) ?>
             <?= Alert::widget() ?>
             <?= $content ?>
         </div>
