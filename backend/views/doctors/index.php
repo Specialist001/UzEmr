@@ -92,7 +92,6 @@ if (isset($doctorSearch['DoctorSearch']) && is_array($doctorSearch['DoctorSearch
                                 return null;
                             },
                         ],
-                        'first_name',
                         [
                             'attribute' => 'first_name',
                             'format' => 'raw',

@@ -47,8 +47,8 @@
                 <li>
                     <a href="#doctor-info" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-user-3-fill"></i><span>Doctors</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                     <ul id="doctor-info" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="<?php echo \yii\helpers\Url::to(['doctor/index'])?>"><i class="ri-file-list-fill"></i>All Doctors</a></li>
-                        <li><a href="<?php echo \yii\helpers\Url::to(['doctor/create'])?>"><i class="ri-user-add-fill"></i> Add Doctor</a></li>
+                        <li><a href="<?php echo \yii\helpers\Url::to(['doctors/index'])?>"><i class="ri-file-list-fill"></i>All Doctors</a></li>
+                        <li><a href="<?php echo \yii\helpers\Url::to(['doctors/create'])?>"><i class="ri-user-add-fill"></i> Add Doctor</a></li>
                         <li><a href="profile.html"><i class="ri-profile-fill"></i>Doctor Profile</a></li>
                         <li><a href="profile-edit.html"><i class="ri-file-edit-fill"></i> Edit Doctor</a></li>
                     </ul>
