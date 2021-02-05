@@ -15,6 +15,7 @@ class SelectAsset extends AssetBundle
     ];
     public $js = [
         'js/select2.min.js',
+        'js/custom.select.js'
     ];
     public $depends = [
 //        'yii\web\YiiAsset',

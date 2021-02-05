@@ -4,6 +4,8 @@ namespace common\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\Query;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "doctors".
@@ -22,6 +24,8 @@ use yii\behaviors\TimestampBehavior;
  */
 class Doctor extends \yii\db\ActiveRecord
 {
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;
     /**
      * {@inheritdoc}
      */
@@ -36,7 +40,7 @@ class Doctor extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id'], 'required'],
+            [['user_id', 'status'], 'required'],
             [['user_id', 'speciality_id', 'status', 'created_at', 'updated_at'], 'integer'],
             [['first_name', 'middle_name', 'last_name'], 'string', 'max' => 100],
             [['user_id'], 'unique'],
@@ -95,6 +99,15 @@ class Doctor extends \yii\db\ActiveRecord
         return $this->hasMany(Clinic::class, ['id' => 'clinic_id'])->viaTable('clinic_doctor', ['doctor_id' => 'id']);
     }
 
+    public static function getActiveClinics($doctor_id)
+    {
+        return (new \yii\db\Query())
+            ->select('clinic_id')
+            ->from('clinic_doctor')
+            ->where(['doctor_id' => $doctor_id])
+            ->column();
+    }
+
     public function getSpecialityName()
     {
         if ($this->speciality) {
@@ -109,5 +122,18 @@ class Doctor extends \yii\db\ActiveRecord
             return true;
         }
         return false;
+    }
+
+    public static function getSpecialities()
+    {
+        return ArrayHelper::map(\common\models\Specialty::find()->all(), 'id', 'name');
+    }
+
+    public function getStatusList()
+    {
+        return [
+            static::STATUS_ACTIVE => 'Active',
+            static::STATUS_INACTIVE => 'In Active',
+        ];
     }
 }

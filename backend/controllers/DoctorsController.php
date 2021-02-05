@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\Clinic;
 use Yii;
 use common\models\Doctor;
 use backend\models\DoctorSearch;
@@ -123,5 +124,39 @@ class DoctorsController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionSetClinics()
+    {
+        $post = Yii::$app->request->post();
+        $clinics = $post['clinics'];
+
+        $doctor = $this->findModel($post['doctor_id']);
+        $clinicArray = [];
+
+        $db = Yii::$app->db;
+        $transaction = $db->beginTransaction();
+
+        $db->createCommand()->delete('clinic_doctor', ['doctor_id' => $doctor->id])->execute();
+        $transaction->commit();
+
+        if (isset($clinics) && is_array($clinics)) {
+            $newClinics = Clinic::find()->where(['in', 'id', $clinics])->count();
+            if ($newClinics > 0) {
+                foreach ($clinics as $key => $clinic) {
+                    $clinicArray[$key] = [$clinic, $doctor->id];
+                }
+                $transaction = $db->beginTransaction();
+                try {
+                    $db->createCommand()->batchInsert('clinic_doctor', ['clinic_id','doctor_id'], $clinicArray)->execute();
+                    $transaction->commit();
+                    return $this->asJson(['error' => false, 'message' => 'Added']);
+                } catch(\Exception $e) {
+                    $transaction->rollBack();
+                    return $this->asJson(['error' => true, 'message' => $e->getMessage()]);
+                }
+            }
+        }
+        return $this->asJson(['error' => false, 'message' => 'Clinic Doctors only delete']);
     }
 }

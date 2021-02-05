@@ -53,6 +53,15 @@
                         <li><a href="profile-edit.html"><i class="ri-file-edit-fill"></i> Edit Doctor</a></li>
                     </ul>
                 </li>
+                <li>
+                    <a href="#clinic-info" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="ri-user-3-fill"></i><span>Clinics</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                    <ul id="clinic-info" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="<?php echo \yii\helpers\Url::to(['clinics/index'])?>"><i class="ri-file-list-fill"></i>All Clinics</a></li>
+                        <li><a href="<?php echo \yii\helpers\Url::to(['clinics/create'])?>"><i class="ri-user-add-fill"></i> Add Clinic</a></li>
+<!--                        <li><a href="profile.html"><i class="ri-profile-fill"></i>Doctor Profile</a></li>-->
+<!--                        <li><a href="profile-edit.html"><i class="ri-file-edit-fill"></i> Edit Doctor</a></li>-->
+                    </ul>
+                </li>
                 <li><a href="calendar.html" class="iq-waves-effect"><i class="ri-calendar-event-fill"></i><span>Calendar</span></a></li>
 
                 <li><a href="chat.html" class="iq-waves-effect"><i class="ri-message-fill"></i><span>Chat</span></a></li>

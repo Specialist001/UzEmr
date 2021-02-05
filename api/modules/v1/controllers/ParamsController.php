@@ -2,12 +2,11 @@
 namespace api\modules\v1\controllers;
 
 
-use api\actions\status\CheckVersionAction;
+//use api\actions\status\CheckVersionAction;
 use api\models\PasswordResetRequestForm;
 use api\models\SignupForm;
+use api\modules\v1\responses\Response;
 use api\modules\v1\services\AuthService;
-use api\responses\ErrorResponse;
-use api\responses\Response;
 use api\forms\AuthForm;
 
 use common\models\ApiUser;
@@ -30,6 +29,8 @@ abstract class ParamsController extends BaseController
     public $_company = null;
     public $device = null;
 
+    public $pagination = null;
+
     private $authService;
 
     public $enableCsrfValidation = false;
@@ -51,6 +52,10 @@ abstract class ParamsController extends BaseController
         return false;
     }
 
+    /**
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     */
     protected function auth()
     {
         $form = new AuthForm();
@@ -70,5 +75,10 @@ abstract class ParamsController extends BaseController
         if ($form->getFirstErrors()) {
             throw new ForbiddenHttpException(__getFirstArrayItem($form->firstErrors), Response::CODE_REJECTED);
         }
+    }
+
+    public function getPagination($count, $pageSize = null)
+    {
+        return new Pagination(['totalCount' => $count, 'pageSize' => $pageSize ? $pageSize : Yii::$app->params['pageSize']]);
     }
 }

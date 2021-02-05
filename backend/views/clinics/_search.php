@@ -14,16 +14,28 @@ use yii\widgets\ActiveForm;
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
-
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'user_id') ?>
-
-    <?= $form->field($model, 'name') ?>
+    <div class="row">
+        <div class="col-6 col-md-4">
+            <?= $form->field($model, 'id') ?>
+        </div>
+        <div class="col-6 col-md-4">
+            <?= $form->field($model, 'user_id')->dropDownList($allUsers, [
+                'prompt' => 'Select User',
+                'class' => 'form-control select-2',
+                'data' => [
+                    'text' => 'Text',
+                    'image' => 'Image'
+                ]
+            ]) ?>
+        </div>
+        <div class="col-6 col-md-4">
+            <?= $form->field($model, 'name') ?>
+        </div>
+    </div>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+        <?php echo Html::a('Reset', ['index'], ['class' => 'btn btn-outline-secondary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

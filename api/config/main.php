@@ -64,6 +64,20 @@ return [
                         '{id}' => '<id:\\w+>'
                     ]
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/clinics',
+                    'tokens' => [
+                        '{id}' => '<id:\\w+>'
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/laboratories',
+                    'tokens' => [
+                        '{id}' => '<id:\\w+>'
+                    ]
+                ],
 //                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
             ]
         ],

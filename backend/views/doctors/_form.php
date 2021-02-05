@@ -1,11 +1,17 @@
 <?php
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Doctor */
 /* @var $form yii\widgets\ActiveForm */
+
+\backend\assets\SelectAsset::register($this);
+$clinics = \common\models\Clinic::find()->asArray()->all();
+//var_dump(\common\models\Doctor::getActiveClinics($model->id));
 ?>
 
 <div class="row">
@@ -14,14 +20,19 @@ use yii\widgets\ActiveForm;
             <div class="iq-card-body p-0">
                 <div class="iq-edit-list">
                     <ul class="iq-edit-profile d-flex nav nav-pills">
-                        <li class="col-md-3 p-0">
+                        <li class="col-md-2 p-0">
                             <a class="nav-link active" data-toggle="pill" href="#personal-information">
                                 Personal Information
                             </a>
                         </li>
-                        <li class="col-md-3 p-0">
+                        <li class="col-md-2 p-0">
                             <a class="nav-link" data-toggle="pill" href="#chang-pwd">
                                 Change Password
+                            </a>
+                        </li>
+                        <li class="col-md-2 p-0">
+                            <a class="nav-link" data-toggle="pill" href="#clinics">
+                                Clinics
                             </a>
                         </li>
                         <li class="col-md-3 p-0">
@@ -67,10 +78,10 @@ use yii\widgets\ActiveForm;
                                     <?= $form->field($model, 'user_id')->textInput(['maxlength' => true]) ?>
                                 </div>
                                 <div class="col-sm-4">
-                                    <?= $form->field($model, 'speciality_id')->textInput(['maxlength' => true]) ?>
+                                    <?= $form->field($model, 'speciality_id')->dropDownList(\common\models\Doctor::getSpecialities(), ['prompt'=>'Select...']) ?>
                                 </div>
                                 <div class="col-sm-4">
-                                    <?= $form->field($model, 'status')->textInput() ?>
+                                    <?= $form->field($model, 'status')->dropDownList($model->getStatusList(), ['prompt'=>'Select...']) ?>
                                 </div>
                                 <div class="col-sm-4">
                                     <?= $form->field($model, 'first_name')->textInput(['maxlength' => true]) ?>
@@ -116,6 +127,46 @@ use yii\widgets\ActiveForm;
                                 <button type="submit" class="btn btn-primary mr-2">Submit</button>
                                 <button type="reset" class="btn iq-bg-danger">cancel</button>
                             </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="clinics" role="tabpanel">
+                    <div class="iq-card">
+                        <div class="iq-card-header d-flex justify-content-between">
+                            <div class="iq-header-title">
+                                <h4 class="card-title">Clinics</h4>
+                            </div>
+                        </div>
+                        <div class="iq-card-body">
+<!--                            --><?php //$form = ActiveForm::begin(['id'=>'clinics']); ?>
+<!--                                <div class="form-group">-->
+<!--                                    <label for="cpass">Current Password:</label>-->
+<!--                                    <a href="javascripe:void();" class="float-right">Forgot Password</a>-->
+<!--                                    <input type="Password" class="form-control" id="cpass" value="">-->
+<!--                                </div>-->
+<!--                            --><?php //echo Html::dropDownList('clinics', null,[],
+//                                [
+//                                    'class' => 'select2',
+//                                    'prompt'=>'Select...',
+//                                    'multiple' => 'multiple'
+//                                ]) ?>
+                            <form id="clinics_form">
+                                <input type="hidden" name="_csrf-backend" value="<?= Yii::$app->request->getCsrfToken() ?>"/>
+                                <input type="hidden" name="doctor_id" value="<?php echo $model->id?>">
+                                <?php if ($clinics && is_array($clinics)) { ?>
+                                    <label for="clinics">Clinics</label>
+                                <select name="clinics[]" id="clinics" class="form-control select-2" multiple="multiple">
+                                    <?php foreach ($clinics as $clinic) { ?>
+                                        <option value="<?php echo $clinic['id'] ?>" <?php echo in_array($clinic['id'], \common\models\Doctor::getActiveClinics($model->id)) ? 'selected' : '' ?>>
+                                            <?php echo $clinic['name'] ?>
+                                        </option>
+                                    <?php } ?>
+                                </select>
+                                <?php } ?>
+                                <a class="btn btn-primary mr-2 clinics_submit">Submit</a>
+                                <button type="reset" class="btn iq-bg-danger">cancel</button>
+                            </form>
+<!--                            --><?php //ActiveForm::end(); ?>
                         </div>
                     </div>
                 </div>
@@ -219,8 +270,24 @@ use yii\widgets\ActiveForm;
             </div>
         </div>
     </div>
-
-
-
-
 </div>
+<?php
+
+$js = <<<JS
+    $('.clinics_submit').on('click', function() {
+        let data = $('form#clinics_form').serialize();
+        console.log(data);
+        $.ajax({
+            url: "/admin/doctors/set-clinics",
+            data: data,
+            type: "post",
+            success: function (response) {
+                console.log(response);
+            }
+        });
+    })
+JS;
+
+$this->registerJs($js, \yii\web\View::POS_READY);
+
+?>

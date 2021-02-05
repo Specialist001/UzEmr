@@ -23,6 +23,9 @@ class AdminAsset extends AssetBundle
         'js/wow.min.js',
         'js/core.js',
         'js/animated.js',
+        'js/jquery.magnific-popup.min.js',
+        'js/jquery.counterup.min.js',
+        'js/slick.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "clinics".
@@ -70,5 +71,10 @@ class Clinic extends \yii\db\ActiveRecord
     public function getReceptions()
     {
         return $this->hasMany(Reception::class, ['clinic_id' => 'id']);
+    }
+
+    public function getUsersList()
+    {
+        return ArrayHelper::map(User::findAll(['status' => User::STATUS_ACTIVE]), 'id', 'username');
     }
 }

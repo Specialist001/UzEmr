@@ -33,7 +33,7 @@ class UsersController extends ParamsController
         if(!$form->validate()) {
             if ($form->getFirstErrors()) {
                 $this->__response = [
-                    'error' => new \api\modules\v1\responses\ErrorResponse(\api\modules\v1\responses\Response::CODE_REJECTED, __getFirstArrayItem($form->firstErrors)),
+                    'error' => new ErrorResponse(Response::CODE_REJECTED, __getFirstArrayItem($form->firstErrors)),
                     'data' => null,
                 ];
                 return $this->__response;
@@ -47,7 +47,7 @@ class UsersController extends ParamsController
 
         $this->__response = [
             'error' => null,
-            'data' => \api\modules\v1\transformers\UserInfo::transform($user),
+            'data' => UserInfo::transform($user),
         ];
         return $this->__response;
     }
